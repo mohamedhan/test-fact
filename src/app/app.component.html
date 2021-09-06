@@ -1,0 +1,10 @@
+<div>
+  <input type="number" name="num" [(ngModel)]="num"  />
+  <button (click)="generateNumbers()" >generate</button>
+  
+</div>
+<div style="{ 'display': 'flex', 'flexWrap': 'wrap' }">
+  <app-cube
+  *ngFor="let valeur of randomArrayColors" [valeur]="valeur"
+  ></app-cube>
+</div>
