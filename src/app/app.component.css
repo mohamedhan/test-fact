@@ -1,0 +1,47 @@
+/* ------ header ------ */
+.myInput{
+    
+        padding:5px; 
+        border:2px solid #ccc; 
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        margin: 5px;
+}
+.myInput:focus {
+    border-color:#333;
+}
+
+.header-btn {
+  padding: 5px 15px;
+  margin: 5px;
+  background: #e6f3ea;
+  border: 0 none;
+  cursor: pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.header-btn:hover {
+    background-color: #333;
+    color:wheat
+  }
+
+/* ------ main ------ */
+
+.image-section{
+    margin-top: 20px;
+    display: 'flex';
+     flex-wrap: 'wrap';
+  }
+.href-btn{
+  text-decoration: none;
+  background: #e6f3ea;
+
+}
+.href-btn:focus {
+  border-color:#333;
+}
+.header-btn:hover .href-btn {
+    background-color: #333;
+    color:wheat
+  }

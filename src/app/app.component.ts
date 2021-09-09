@@ -1,7 +1,9 @@
-import { Component,ViewChild,ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import * as htmlToImage from 'html-to-image';
+import { DomSanitizer, SafeValue } from '@angular/platform-browser';
 
-import html2canvas from 'html2canvas';
+// var saveAs = require('file-saver');
+ import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-root',
@@ -10,33 +12,24 @@ import html2canvas from 'html2canvas';
 })
 export class AppComponent {
 
-  title = 'test-fact';
-  num=0;
-  randomArray:number[]=[];
-  randomArrayColors:number[][]=[];
-  // @ViewChild('screen') screen: ElementRef<HTMLInputElement> = {} as ElementRef
-  // @ViewChild('canvas') canvas: ElementRef<HTMLInputElement> = {} as ElementRef;
-  // @ViewChild('downloadLink') downloadLink: ElementRef<HTMLInputElement> = {} as ElementRef;
-  // downloadImage(){
-  //   html2canvas(this.screen.nativeElement).then(canvas => {
-  //     this.canvas.nativeElement.src = canvas.toDataURL();
-  //     this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
-  //     // this.downloadLink.nativeElement.download = 'marble-diagram.png';
-  //     this.downloadLink.nativeElement.click();
-  //   });
-  // }
+  numericalValue=0;
+  randomNumbers:number[]=[];
+  rgbNumbers:number[][]=[];
+  fileUrl:SafeValue="";
+
+  constructor(private sanitizer: DomSanitizer) {  }
   generateNumbers(){
-    // this.randomArray=[]
-    for (let i = 1; i <= this.num; i++) {
-      this.randomArray.push(Math.floor(Math.random() * (100 + 100 + 1)) - 100);
+    // reset randomNumbers
+    this.randomNumbers=[]
+    // fill randomNumbers with x random values
+    for (let i = 1; i <= this.numericalValue; i++) {
+      this.randomNumbers.push(Math.floor(Math.random() * (100 + 100 + 1)) - 100);
     }
-    // this.randomArrayColors=this.randomArray.map(el=> el<0? el/100:  el*10 )
-    this.randomArrayColors =this.randomArray.map((el, i) =>
+    // fill rgbNumbers with tables that contain three values ​​(rgb)  which will be the color of the svg 
+    this.rgbNumbers =this.randomNumbers.map((el, i) =>
     el === 0
-    // g (el*255)/200
       ? [127.5,
          127.5, 0]
-        //  r
       :  el<0? [Math.round(((100-Math.abs(el))/200)*255),
          Math.round(((Math.abs(el)+100)/200)*255), 0] 
          : 
@@ -44,19 +37,39 @@ export class AppComponent {
           Math.round(((100-Math.abs(el))/200)*255), 0]
   )
   }
-  
-  generateImage(){
-    var node:any = document.getElementById('image-section');
-    htmlToImage.toPng(node)
-      .then(function (dataUrl) {
-        var img = new Image();
-        img.src = dataUrl;
-        document.body.appendChild(img);
-      })
-      .catch(function (error) {
-        console.error('oops, something went wrong!', error);
-      });
+  // 
+  async generateImage(){
+    var node:any = document.querySelector('.image-section');
+    try {
+      // get url of the image
+      let dataUrl=await      htmlToImage.toPng(node);
+      // download image 
+      let byteCharacters=atob(dataUrl.slice(22))
+     let  byteNumbers = new Array(byteCharacters.length);
+      for (var i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      
+      var byteArray = new Uint8Array(byteNumbers);
+      
+      let blob = new Blob([byteArray], {"type": "image/jpeg"});
+        console.log(navigator)
+          if(navigator.msSaveBlob){
+            let filename = 'fichier';
+            navigator.msSaveBlob(blob, filename);
+          } else {
+            let link = document.createElement("a");
+      
+            link.href = URL.createObjectURL(blob);
+      
+            link.download = 'fichier';
+      
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+    } catch (error) {
+      console.error('oops, something went wrong!', error);
+    }
   }
-
- 
 }

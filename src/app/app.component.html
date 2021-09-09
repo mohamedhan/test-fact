@@ -1,14 +1,15 @@
-<div>
-  <input type="number" name="num" [(ngModel)]="num"  />
-  <button (click)="generateNumbers()" >generate</button>
-  <button type="button" (click)="generateImage()">Create Image</button>
-</div>
-<div #screen id="image-section" [ngStyle]="{ 'display': 'flex', 'flexWrap': 'wrap' }">
-  <app-cube
-  *ngFor="let valeur of randomArrayColors" [valeur]="valeur"
-  ></app-cube>
-</div>
-<div id="download">
-  <img #canvas>
-  <a #downloadLink></a>
-</div>
+<!-- header -->
+<header>
+  <input class="myInput" type="number" name="numericalValue" [(ngModel)]="numericalValue"  />
+  <button class="header-btn" (click)="generateNumbers()" >generate</button>
+  <button class="header-btn"  (click)="generateImage()">    download Image </button>
+</header>
+
+<!-- main -->
+<main>
+  <div  class="image-section" >
+    <app-cube
+    *ngFor="let rgbNumber of rgbNumbers" [rgbNumber]="rgbNumber"
+    ></app-cube>
+  </div>
+</main>

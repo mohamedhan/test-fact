@@ -6,15 +6,13 @@ import { Component, OnInit,Input } from '@angular/core';
   styleUrls: ['./cube.component.css']
 })
 export class CubeComponent implements OnInit {
-@Input() valeur:number[]=[]
+@Input() rgbNumber:number[]=[]
   constructor() { }
 
   ngOnInit(): void {
   }
-   getColorString(): string {
-     console.log(this.valeur[0])
-     console.log(this.valeur[1])
-     console.log(this.valeur[2])
-    return `rgb(${this.valeur[0]},${this.valeur[1]},${this.valeur[2]}`;
+  // color assignment for svg 
+  getColorString(): string {
+    return `rgb(${this.rgbNumber[0]},${this.rgbNumber[1]},${this.rgbNumber[2]}`;
   }
 }
